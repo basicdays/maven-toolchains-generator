@@ -1,34 +1,109 @@
 {
 	"name": "@basicdays/maven-toolchains-generator",
+	"version": "0.0.0",
 	"packageManager": "yarn@3.2.2",
-	"description": "Tool to autogenerate Maven's toolchains.xml file based on JEnv",
+	"description": "Tool to autogenerate Maven's toolchains.xml file based on jEnv",
 	"license": "MIT",
 	"author": "BasicDays <info@basicdays.com> (https://basicdays.com)",
 	"files": [
-		"/lib",
-		"!/lib/test",
-		"!/lib/**/*.test.js",
+		"/dist",
+		"!/dist/test",
+		"!/dist/**/*.test.js",
 		"!**/*.d.ts.map"
 	],
+	"main": "dist/build-config.js",
+	"bin": "dist/bin/maven-toolchains-generator.js",
 	"scripts": {
-		"format": "prettier --write ."
+		"build": "tsc",
+		"clean": "rimraf dist tsconfig.tsbuildinfo",
+		"lint": "eslint .",
+		"format": "run-s 'format:*'",
+		"format:eslint": "eslint --fix .",
+		"format:prettier": "prettier --write ."
 	},
 	"dependencies": {
+		"tslib": "^2.4.0",
 		"xml2js": "^0.4.23"
 	},
 	"devDependencies": {
+		"@tsconfig/node12": "^1.0.11",
 		"@types/eslint": "^8",
+		"@types/node": "^12",
 		"@types/prettier": "^2",
+		"@types/rimraf": "^3",
 		"@types/xml2js": "^0",
+		"@typescript-eslint/eslint-plugin": "^5.33.1",
+		"@typescript-eslint/parser": "^5.33.1",
 		"eslint": "^8.22.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-import-resolver-typescript": "^3.4.1",
+		"eslint-plugin-import": "^2.26.0",
+		"npm-run-all": "^4.1.5",
 		"prettier": "^2.7.1",
+		"rimraf": "^3.0.2",
 		"typescript": "^4.7.4"
 	},
 	"eslintConfig": {
 		"root": true,
+		"parser": "@typescript-eslint/parser",
+		"parserOptions": {
+			"project": [
+				"./tsconfig.json"
+			]
+		},
+		"plugins": [
+			"@typescript-eslint"
+		],
 		"extends": [
-			"eslint:recommended"
-		]
+			"eslint:recommended",
+			"plugin:import/recommended",
+			"plugin:import/typescript",
+			"plugin:@typescript-eslint/recommended",
+			"plugin:@typescript-eslint/recommended-requiring-type-checking",
+			"plugin:@typescript-eslint/strict",
+			"prettier"
+		],
+		"settings": {
+			"import/resolver": {
+				"typescript": true,
+				"node": true
+			}
+		},
+		"rules": {
+			"import/first": "error",
+			"import/newline-after-import": "error",
+			"import/no-useless-path-segments": "error",
+			"import/order": [
+				"error",
+				{
+					"groups": [
+						"builtin",
+						"external",
+						"internal",
+						[
+							"parent",
+							"sibling",
+							"index"
+						],
+						"type"
+					],
+					"alphabetize": {
+						"caseInsensitive": true,
+						"order": "asc"
+					},
+					"newlines-between": "always"
+				}
+			],
+			"import/no-extraneous-dependencies": [
+				"error",
+				{
+					"devDependencies": [
+						"**/src/test/**",
+						"**/*.test.{ts,tsx,js}"
+					]
+				}
+			]
+		}
 	},
 	"prettier": {
 		"useTabs": true
