@@ -1,7 +1,6 @@
 {
 	"name": "@basicdays/maven-toolchains-generator",
 	"version": "0.0.0",
-	"packageManager": "yarn@3.2.2",
 	"description": "Tool to autogenerate Maven's toolchains.xml file based on jEnv",
 	"license": "MIT",
 	"author": "BasicDays <info@basicdays.com> (https://basicdays.com)",
